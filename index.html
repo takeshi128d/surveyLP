@@ -3,167 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Survey | アンケート調査</title>
+    <title>ARUTANA ブランドリフトサーベイ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .option-card.selected { border-color: #2563eb; background-color: #eff6ff; ring: 2px; ring-color: #2563eb; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        
+        /* 選択時のハイライト（ラジオ＆チェックボックス共通） */
+        .option-card { transition: all 0.2s ease; }
+        .option-card:active { transform: scale(0.98); }
+        .option-card.selected { 
+            border-color: #f97316; /* ARUTANAを意識したオレンジ系のアクセント（適宜変更可） */
+            background-color: #fff7ed; 
+            box-shadow: 0 0 0 2px #ffedd5;
+        }
+        .option-card.selected i.check-icon { color: #f97316; opacity: 1; }
+        .check-icon { opacity: 0.2; transition: opacity 0.2s; }
+        
         .loading-spinner { border-top-color: transparent; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
 
-    <header class="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-xl mx-auto px-6 py-4">
+    <header class="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-md mx-auto px-5 py-4">
             <div class="flex justify-between items-center mb-2">
-                <span class="text-sm font-bold text-blue-600 tracking-tight">BRAND LIFT SURVEY</span>
-                <span id="progress-text" class="text-xs font-medium text-slate-400">Step 1 / 3</span>
+                <span class="text-xs font-extrabold text-orange-600 tracking-wider">BRAND SURVEY</span>
+                <span id="progress-text" class="text-xs font-bold text-slate-400">Step 1 / 4</span>
             </div>
-            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div id="progress-bar" class="bg-blue-600 h-full transition-all duration-500 ease-in-out" style="width: 33.3%"></div>
+            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-orange-500 h-full transition-all duration-500 ease-in-out" style="width: 25%"></div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-xl mx-auto px-6 py-10">
-        <form id="survey-form" class="space-y-8">
+    <main class="max-w-md mx-auto px-5 py-8 pb-20">
+        <form id="survey-form" class="space-y-6">
             <input type="hidden" id="user_id" name="user_id">
             <input type="hidden" id="campaign_id" name="campaign_id">
 
-            <section id="step-1" class="animate-fade-in space-y-6">
-                <div class="space-y-2">
-                    <h2 class="text-2xl font-extrabold tracking-tight">Q1. 認知経路について</h2>
-                    <p class="text-slate-500 text-sm">この製品をどこで初めて知りましたか？</p>
+            <section id="step-1" class="animate-fade-in space-y-5">
+                <div class="space-y-2 mb-6">
+                    <span class="inline-block bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded">Q1. 認知</span>
+                    <h2 class="text-xl font-extrabold leading-tight">以下のブランドの中で、最近広告で見かけたものはありますか？</h2>
+                    <p class="text-slate-500 text-sm">（複数選択可）</p>
                 </div>
                 <div class="grid gap-3">
-                    <label class="option-card group p-5 border-2 border-slate-200 rounded-2xl cursor-pointer flex items-center transition-all hover:border-blue-300">
-                        <input type="radio" name="q1" value="SNS" class="hidden" required>
-                        <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mr-4 group-hover:bg-blue-100 transition-colors">
-                            <i class="fa-solid fa-hashtag text-blue-600"></i>
-                        </div>
-                        <span class="font-bold text-slate-700">SNS (Instagram / X)</span>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex justify-between items-center bg-white">
+                        <span class="font-bold text-slate-700">対象ブランドA（自社）</span>
+                        <input type="checkbox" name="q1" value="Brand_A" class="hidden checkbox-input">
+                        <i class="fa-solid fa-circle-check text-xl check-icon"></i>
                     </label>
-                    <label class="option-card group p-5 border-2 border-slate-200 rounded-2xl cursor-pointer flex items-center transition-all hover:border-blue-300">
-                        <input type="radio" name="q1" value="WebAd" class="hidden">
-                        <div class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center mr-4 group-hover:bg-indigo-100 transition-colors">
-                            <i class="fa-solid fa-rectangle-ad text-indigo-600"></i>
-                        </div>
-                        <span class="font-bold text-slate-700">Web広告</span>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex justify-between items-center bg-white">
+                        <span class="font-bold text-slate-700">競合ブランドB</span>
+                        <input type="checkbox" name="q1" value="Brand_B" class="hidden checkbox-input">
+                        <i class="fa-solid fa-circle-check text-xl check-icon"></i>
                     </label>
-                    <label class="option-card group p-5 border-2 border-slate-200 rounded-2xl cursor-pointer flex items-center transition-all hover:border-blue-300">
-                        <input type="radio" name="q1" value="Other" class="hidden">
-                        <div class="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center mr-4 group-hover:bg-slate-100 transition-colors">
-                            <i class="fa-solid fa-ellipsis text-slate-600"></i>
-                        </div>
-                        <span class="font-bold text-slate-700">その他</span>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex justify-between items-center bg-white">
+                        <span class="font-bold text-slate-700">競合ブランドC</span>
+                        <input type="checkbox" name="q1" value="Brand_C" class="hidden checkbox-input">
+                        <i class="fa-solid fa-circle-check text-xl check-icon"></i>
+                    </label>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex justify-between items-center bg-white">
+                        <span class="font-bold text-slate-700">特にない</span>
+                        <input type="checkbox" name="q1" value="None" class="hidden checkbox-input exclusive-check">
+                        <i class="fa-solid fa-circle-check text-xl check-icon"></i>
                     </label>
                 </div>
-                <button type="button" onclick="nextStep(2)" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-200">
-                    次へ進む <i class="fa-solid fa-chevron-right ml-2 text-sm"></i>
+                <button type="button" onclick="nextStep(2)" class="mt-6 w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all shadow-lg">
+                    次へ <i class="fa-solid fa-chevron-right ml-1 text-sm"></i>
                 </button>
             </section>
 
-            <section id="step-2" class="hidden animate-fade-in space-y-6">
-                <div class="space-y-2">
-                    <h2 class="text-2xl font-extrabold tracking-tight">Q2. 購入意向について</h2>
-                    <p class="text-slate-500 text-sm">今後、この製品を購入したいと思いますか？</p>
+            <section id="step-2" class="hidden animate-fade-in space-y-5">
+                <div class="space-y-2 mb-6">
+                    <span class="inline-block bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded">Q2. 購買意欲</span>
+                    <h2 class="text-xl font-extrabold leading-tight">今後お買い物をする際、この商品を購入したいと思いますか？</h2>
                 </div>
                 <div class="grid gap-3">
-                    <label class="option-card p-5 border-2 border-slate-200 rounded-2xl cursor-pointer flex items-center transition-all">
-                        <input type="radio" name="q2" value="VeryLikely" class="hidden" required>
-                        <span class="font-bold text-slate-700">非常に購入したい</span>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q2" value="Buy_Definitely" class="hidden radio-input" required>
+                        <span class="text-2xl mr-3">🤩</span>
+                        <span class="font-bold text-slate-700">ぜひ購入したい</span>
                     </label>
-                    <label class="option-card p-5 border-2 border-slate-200 rounded-2xl cursor-pointer flex items-center transition-all">
-                        <input type="radio" name="q2" value="Likely" class="hidden">
-                        <span class="font-bold text-slate-700">やや購入したい</span>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q2" value="Buy_Maybe" class="hidden radio-input">
+                        <span class="text-2xl mr-3">🙂</span>
+                        <span class="font-bold text-slate-700">機会があれば購入したい</span>
                     </label>
-                    <label class="option-card p-5 border-2 border-slate-200 rounded-2xl cursor-pointer flex items-center transition-all">
-                        <input type="radio" name="q2" value="Neutral" class="hidden">
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q2" value="Neutral" class="hidden radio-input">
+                        <span class="text-2xl mr-3">🤔</span>
                         <span class="font-bold text-slate-700">どちらともいえない</span>
                     </label>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q2" value="Not_Buy" class="hidden radio-input">
+                        <span class="text-2xl mr-3">🙅‍♂️</span>
+                        <span class="font-bold text-slate-700">あまり購入したくない</span>
+                    </label>
                 </div>
-                <div class="flex gap-4">
-                    <button type="button" onclick="nextStep(1)" class="w-1/3 border border-slate-300 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition">戻る</button>
-                    <button type="button" onclick="nextStep(3)" class="w-2/3 bg-slate-900 text-white py-4 rounded-2xl font-bold text-lg hover:bg-slate-800 transition shadow-xl shadow-slate-200">最後へ</button>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="nextStep(1)" class="w-1/3 bg-white border-2 border-slate-200 py-4 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition">戻る</button>
+                    <button type="button" onclick="nextStep(3)" class="w-2/3 bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition shadow-lg">次へ <i class="fa-solid fa-chevron-right ml-1 text-sm"></i></button>
                 </div>
             </section>
 
-            <section id="step-3" class="hidden animate-fade-in space-y-6">
-                <div class="space-y-2">
-                    <h2 class="text-2xl font-extrabold tracking-tight">Q3. 自由記述</h2>
-                    <p class="text-slate-500 text-sm">製品への期待やご意見を自由にお書きください。</p>
+            <section id="step-3" class="hidden animate-fade-in space-y-5">
+                <div class="space-y-2 mb-6">
+                    <span class="inline-block bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded">Q3. 印象</span>
+                    <h2 class="text-xl font-extrabold leading-tight">この商品の広告から、どのような印象を受けましたか？</h2>
+                    <p class="text-slate-500 text-sm">（複数選択可）</p>
                 </div>
-                <textarea name="q3" rows="5" class="w-full border-2 border-slate-200 rounded-2xl p-5 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 text-slate-700 outline-none transition" placeholder="入力してください（任意）"></textarea>
-                <div class="flex gap-4">
-                    <button type="button" onclick="nextStep(2)" class="w-1/3 border border-slate-300 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition">戻る</button>
-                    <button type="submit" id="submit-btn" class="w-2/3 bg-green-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-green-700 transition shadow-xl shadow-green-100 flex justify-center items-center">
-                        <span id="btn-text">回答を送信する</span>
-                        <div id="spinner" class="hidden animate-spin h-5 w-5 border-2 border-white rounded-full loading-spinner ml-3"></div>
+                <div class="grid gap-3 grid-cols-2">
+                    <label class="option-card p-3 border-2 border-slate-200 rounded-xl cursor-pointer flex flex-col items-center text-center bg-white">
+                        <input type="checkbox" name="q3" value="High_Quality" class="hidden checkbox-input">
+                        <i class="fa-solid fa-gem text-2xl text-slate-300 mb-2 check-icon"></i>
+                        <span class="font-bold text-sm text-slate-700">高品質そう</span>
+                    </label>
+                    <label class="option-card p-3 border-2 border-slate-200 rounded-xl cursor-pointer flex flex-col items-center text-center bg-white">
+                        <input type="checkbox" name="q3" value="Cost_Performance" class="hidden checkbox-input">
+                        <i class="fa-solid fa-wallet text-2xl text-slate-300 mb-2 check-icon"></i>
+                        <span class="font-bold text-sm text-slate-700">コスパが良い</span>
+                    </label>
+                    <label class="option-card p-3 border-2 border-slate-200 rounded-xl cursor-pointer flex flex-col items-center text-center bg-white">
+                        <input type="checkbox" name="q3" value="Innovative" class="hidden checkbox-input">
+                        <i class="fa-solid fa-lightbulb text-2xl text-slate-300 mb-2 check-icon"></i>
+                        <span class="font-bold text-sm text-slate-700">新しそう</span>
+                    </label>
+                    <label class="option-card p-3 border-2 border-slate-200 rounded-xl cursor-pointer flex flex-col items-center text-center bg-white">
+                        <input type="checkbox" name="q3" value="Trustworthy" class="hidden checkbox-input">
+                        <i class="fa-solid fa-shield-heart text-2xl text-slate-300 mb-2 check-icon"></i>
+                        <span class="font-bold text-sm text-slate-700">信頼できる</span>
+                    </label>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="nextStep(2)" class="w-1/3 bg-white border-2 border-slate-200 py-4 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition">戻る</button>
+                    <button type="button" onclick="nextStep(4)" class="w-2/3 bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition shadow-lg">次へ <i class="fa-solid fa-chevron-right ml-1 text-sm"></i></button>
+                </div>
+            </section>
+
+            <section id="step-4" class="hidden animate-fade-in space-y-5">
+                <div class="space-y-2 mb-6">
+                    <span class="inline-block bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded">Q4. 購買チャネル</span>
+                    <h2 class="text-xl font-extrabold leading-tight">この商品をどこで購入したい（または購入した）ですか？</h2>
+                </div>
+                <div class="grid gap-3">
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q4" value="Drugstore" class="hidden radio-input" required>
+                        <span class="font-bold text-slate-700">ドラッグストア</span>
+                    </label>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q4" value="Supermarket" class="hidden radio-input">
+                        <span class="font-bold text-slate-700">スーパーマーケット</span>
+                    </label>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q4" value="ConvenienceStore" class="hidden radio-input">
+                        <span class="font-bold text-slate-700">コンビニエンスストア</span>
+                    </label>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q4" value="HomeCenter" class="hidden radio-input">
+                        <span class="font-bold text-slate-700">ホームセンター</span>
+                    </label>
+                    <label class="option-card p-4 border-2 border-slate-200 rounded-xl cursor-pointer flex items-center bg-white">
+                        <input type="radio" name="q4" value="EC" class="hidden radio-input">
+                        <span class="font-bold text-slate-700">オンライン（ECサイト）</span>
+                    </label>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="nextStep(3)" class="w-1/3 bg-white border-2 border-slate-200 py-4 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition">戻る</button>
+                    <button type="submit" id="submit-btn" class="w-2/3 bg-orange-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-700 transition shadow-lg shadow-orange-200 flex justify-center items-center">
+                        <span id="btn-text">回答を送信</span>
+                        <div id="spinner" class="hidden animate-spin h-5 w-5 border-2 border-white rounded-full loading-spinner ml-2"></div>
                     </button>
                 </div>
             </section>
         </form>
 
-        <div id="thank-you" class="hidden py-16 text-center animate-fade-in space-y-6">
-            <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner">
-                <i class="fa-solid fa-check"></i>
+        <div id="thank-you" class="hidden py-20 text-center animate-fade-in space-y-5">
+            <div class="w-20 h-20 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner mb-4">
+                <i class="fa-solid fa-gift"></i>
             </div>
-            <div class="space-y-2">
-                <h2 class="text-3xl font-black">THANK YOU!</h2>
-                <p class="text-slate-500 font-medium leading-relaxed">アンケートへのご協力ありがとうございました。<br>回答は正常に送信されました。</p>
-            </div>
-            <p class="text-xs text-slate-400">この画面は閉じていただいて構いません。</p>
+            <h2 class="text-2xl font-black text-slate-800">ご回答<br>ありがとうございました！</h2>
+            <p class="text-slate-500 text-sm leading-relaxed">貴重なご意見は、今後のサービス向上に<br>役立たせていただきます。</p>
+            <button onclick="window.close()" class="mt-8 px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-full text-sm hover:bg-slate-200">
+                画面を閉じる
+            </button>
         </div>
     </main>
 
     <script>
         // ---------------------------------------------------------
-        // 1. 設定：ご提示いただいたGASのURL
+        // 1. 設定：GASエンドポイント
         // ---------------------------------------------------------
         const GAS_URL = "https://script.google.com/a/macros/dearone.io/s/AKfycbxjP5RprZufw5mXngO7bErY7xOKW9XiUDhOLelxy19eT7q5pxhlI3zopEQIdDUft9XlNg/exec";
 
         // ---------------------------------------------------------
-        // 2. 初期化：URLパラメータの自動取得
+        // 2. 初期化：URLパラメータの取得
         // ---------------------------------------------------------
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            // user_id, camp_id というパラメータを拾う
-            document.getElementById('user_id').value = params.get('user_id') || 'untracked';
-            document.getElementById('campaign_id').value = params.get('camp_id') || 'untracked';
-            console.log("Tracking initialized:", {
-                uid: document.getElementById('user_id').value,
-                cid: document.getElementById('campaign_id').value
-            });
+            document.getElementById('user_id').value = params.get('user_id') || 'untracked_user';
+            document.getElementById('campaign_id').value = params.get('camp_id') || 'untracked_camp';
         };
 
         // ---------------------------------------------------------
-        // 3. UIロジック：ステップ切り替え
+        // 3. UIロジック：ステップ遷移と進捗バー
         // ---------------------------------------------------------
         function nextStep(step) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(`step-${step}`).classList.remove('hidden');
             
-            // 進捗バー更新
-            const progress = (step / 3) * 100;
+            const progress = (step / 4) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
-            document.getElementById('progress-text').innerText = `Step ${step} / 3`;
+            document.getElementById('progress-text').innerText = `Step ${step} / 4`;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ラジオボタン選択時の視覚効果
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        // ---------------------------------------------------------
+        // 4. UIロジック：選択肢のハイライト制御
+        // ---------------------------------------------------------
+        // ラジオボタン用（単一選択）
+        document.querySelectorAll('.radio-input').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 document.querySelectorAll(`input[name="${e.target.name}"]`).forEach(r => {
                     r.parentElement.classList.remove('selected');
                 });
                 if(e.target.checked) e.target.parentElement.classList.add('selected');
+                
+                // UX向上: ラジオボタン選択後、少し待って自動で次へ進む（最後のステップ以外）
+                const currentStep = parseInt(e.target.closest('section').id.split('-')[1]);
+                if(currentStep < 4) {
+                    setTimeout(() => nextStep(currentStep + 1), 300);
+                }
+            });
+        });
+
+        // チェックボックス用（複数選択）
+        document.querySelectorAll('.checkbox-input').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const label = e.target.parentElement;
+                
+                // 「特にない」などの排他制御
+                if(e.target.classList.contains('exclusive-check') && e.target.checked) {
+                    document.querySelectorAll(`input[name="${e.target.name}"]:not(.exclusive-check)`).forEach(cb => {
+                        cb.checked = false;
+                        cb.parentElement.classList.remove('selected');
+                    });
+                } else if (!e.target.classList.contains('exclusive-check') && e.target.checked) {
+                    const exclusive = document.querySelector(`input[name="${e.target.name}"].exclusive-check`);
+                    if(exclusive) {
+                        exclusive.checked = false;
+                        exclusive.parentElement.classList.remove('selected');
+                    }
+                }
+
+                if(e.target.checked) {
+                    label.classList.add('selected');
+                } else {
+                    label.classList.remove('selected');
+                }
             });
         });
 
         // ---------------------------------------------------------
-        // 4. データ送信：GAS連携
+        // 5. データ送信：GASへの連携（複数選択対応）
         // ---------------------------------------------------------
         document.getElementById('survey-form').onsubmit = async (e) => {
             e.preventDefault();
@@ -171,33 +275,40 @@
             const spinner = document.getElementById('spinner');
             const btnText = document.getElementById('btn-text');
 
-            // 送信中状態に
             btn.disabled = true;
             spinner.classList.remove('hidden');
             btnText.innerText = "送信中...";
 
             const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
+            const data = {};
+            
+            // 複数選択（チェックボックス）の値をカンマ区切りでまとめる処理
+            for (const [key, value] of formData.entries()) {
+                if (data[key]) {
+                    data[key] += `, ${value}`;
+                } else {
+                    data[key] = value;
+                }
+            }
 
             try {
-                // GASへの送信
                 await fetch(GAS_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // CORS制約を回避するための設定
+                    mode: 'no-cors', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
                 
-                // 成功表示
                 document.getElementById('survey-form').classList.add('hidden');
                 document.querySelector('header').classList.add('hidden');
                 document.getElementById('thank-you').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (error) {
-                console.error("Error!", error);
-                alert("送信中にエラーが発生しました。通信環境をご確認ください。");
+                console.error(error);
+                alert("通信エラーが発生しました。電波の良いところで再度お試しください。");
                 btn.disabled = false;
                 spinner.classList.add('hidden');
-                btnText.innerText = "回答を送信する";
+                btnText.innerText = "回答を送信";
             }
         };
     </script>
