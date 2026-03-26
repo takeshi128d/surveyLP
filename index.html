@@ -180,13 +180,23 @@
             </section>
         </form>
 
-        <div id="thank-you" class="hidden py-20 text-center animate-fade-in space-y-5">
-            <div class="w-20 h-20 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner mb-4">
+       <div id="thank-you" class="hidden py-16 text-center animate-fade-in space-y-5">
+            <div class="w-20 h-20 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner mb-2">
                 <i class="fa-solid fa-gift"></i>
             </div>
             <h2 class="text-2xl font-black text-slate-800">ご回答<br>ありがとうございました！</h2>
             <p class="text-slate-500 text-sm leading-relaxed">貴重なご意見は、今後のサービス向上に<br>役立たせていただきます。</p>
-            <button onclick="window.close()" class="mt-8 px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-full text-sm hover:bg-slate-200">
+            
+            <div class="mt-6 mx-auto max-w-[280px] p-4 bg-orange-50 border border-orange-100 rounded-xl text-left">
+                <p class="text-sm font-extrabold text-orange-800 flex items-center mb-1">
+                    <i class="fa-solid fa-coins mr-2 text-orange-500"></i> ポイント付与について
+                </p>
+                <p class="text-xs text-orange-700 leading-relaxed">
+                    本アンケートご協力へのポイントは、<br>
+                    <span class="font-bold text-orange-600 bg-orange-100 px-1 rounded">回答日から2〜3ヶ月後</span> を目処に順次付与されます。
+                </p>
+            </div>
+            <button onclick="window.close()" class="mt-8 px-8 py-4 bg-slate-100 text-slate-600 font-bold rounded-full text-sm hover:bg-slate-200 transition-colors">
                 画面を閉じる
             </button>
         </div>
