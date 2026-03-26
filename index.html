@@ -209,13 +209,20 @@
         // ---------------------------------------------------------
         const GAS_URL = "https://script.google.com/macros/s/AKfycbxKKfQHk8rExWb5AsCWunSloz8aTNxXVsjzhjqV67VXqsYqEDc6sDHSd62KP9Q2FGo3/exec";
 
-        // ---------------------------------------------------------
+     
+    // ---------------------------------------------------------
         // 2. 初期化：URLパラメータの取得
         // ---------------------------------------------------------
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            document.getElementById('user_id').value = params.get('user_id') || 'untracked_user';
+            
+            // ▼修正：'CLID' または 'user_id' のどちらかがURLにあれば取得する
+            const trackingId = params.get('CLID') || params.get('user_id') || 'untracked_user';
+            document.getElementById('user_id').value = trackingId;
+            
             document.getElementById('campaign_id').value = params.get('camp_id') || 'untracked_camp';
+            
+            console.log("取得したID:", trackingId); // デバッグ用
         };
 
         // ---------------------------------------------------------
