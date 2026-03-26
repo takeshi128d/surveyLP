@@ -279,6 +279,9 @@
         // ---------------------------------------------------------
         // 5. データ送信：GASへの連携（複数選択対応）
         // ---------------------------------------------------------
+       // ---------------------------------------------------------
+        // 5. データ送信：GASへの連携（フォームデータ形式に変更）
+        // ---------------------------------------------------------
         document.getElementById('survey-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
@@ -290,23 +293,23 @@
             btnText.innerText = "送信中...";
 
             const formData = new FormData(e.target);
-            const data = {};
+            const dataParams = new URLSearchParams(); // JSONではなくURLパラメータ形式にする
             
             // 複数選択（チェックボックス）の値をカンマ区切りでまとめる処理
             for (const [key, value] of formData.entries()) {
-                if (data[key]) {
-                    data[key] += `, ${value}`;
+                if (dataParams.has(key)) {
+                    dataParams.set(key, dataParams.get(key) + `, ${value}`);
                 } else {
-                    data[key] = value;
+                    dataParams.append(key, value);
                 }
             }
 
             try {
+                // 送信処理（bodyにURLSearchParamsをそのまま渡す）
                 await fetch(GAS_URL, {
                     method: 'POST',
                     mode: 'no-cors', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: dataParams
                 });
                 
                 document.getElementById('survey-form').classList.add('hidden');
@@ -319,6 +322,8 @@
                 btn.disabled = false;
                 spinner.classList.add('hidden');
                 btnText.innerText = "回答を送信";
+            }
+        };
             }
         };
     </script>
